@@ -3,7 +3,7 @@ namespace src\handlers;
 
 use \src\models\User;
 
-class LoginHandler {
+class UserHandler {
     public static function checkLogin() { //Verifica se está logado
         if(!empty($_SESSION['token'])) {
             $token = $_SESSION['token'];
@@ -41,6 +41,32 @@ class LoginHandler {
         return false;
     }
 
+    public function getUser($id) {
+        $data = User::select()->where('id', $id)->one();
+
+        if($data){
+            // $user = new User();
+
+            // $user->id = $data['id'];
+            // $user->name = $data['name'];
+            // $user->birthdate = $data['birthdate'];
+            // $user->city = $data['city'];
+            // $user->work = $data['work'];
+            // $user->avatar = $data['avatar'];
+            // $user->cover = $data['cover'];
+
+            return $data;
+        }
+
+        return false;
+    }
+
+    // public static function idExists($id){
+    //     $user = User::select()->where('id', $id)->one();
+
+    //     return $user ? true : false;
+    // }
+
     public static function emailExists($email){
         $user = User::select()->where('email', $email)->one();
 
@@ -56,6 +82,8 @@ class LoginHandler {
             "password" => $hash,
             "name" => $name,
             "birthdate" => $birthdate,
+            "avatar" => "default.jpg",
+            "cover" => "cover.jpg",
             "token" => $token
         ])->execute();
 
